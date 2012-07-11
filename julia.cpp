@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	const double pix_worth_x = (abs(min_x) + abs(max_x))/xres;
 	const double pix_worth_y = (abs(min_y) + abs(max_y))/yres;
 	
-	const complex<double> c(-1.125, .25);
+	const complex<double> c(-.8, .156);
 
 	ofstream q;
 	q.open("julia.ppm");

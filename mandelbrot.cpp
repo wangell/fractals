@@ -7,8 +7,8 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	const int xres = 5500;
-	const int yres = 5500;
+	const int xres = 10000;
+	const int yres = 10000;
 
 	const double min_x = -2.0;
 	const double max_x = .8;
@@ -21,11 +21,13 @@ int main(int argc, char** argv)
 	const double pix_worth_y = (abs(min_y) + abs(max_y))/yres;
 
 	ofstream q;
-	q.open("mandelbrot.ppm");
+	q.open(argv[1]);
 	q<<"P3\n"<<xres<<" "<<yres<<"\n255\n";
 
 	for (int y = 0; y < yres; ++y)
 	{
+		if (y%1000 == 0)
+			cout<<"Line: "<<y<<endl;
 		for (int x = 0; x < xres; ++x)
 		{
 			complex<double> c(min_x+x*pix_worth_x, min_y+y*pix_worth_y);
