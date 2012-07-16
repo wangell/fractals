@@ -9,15 +9,15 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	const int xres = 5700;
-	const int yres = 5500;
+	const int xres = 2880;
+	const int yres = 1800;
 
 	const double min_x = -1.4;
 	const double max_x = 1.6;
 	const double min_y = -1.0;
 	const double max_y = 1.0;
 
-	const int max_iter = 120;
+	const int max_iter = 120; //120
 
 	const double pix_worth_x = (abs(min_x) + abs(max_x))/xres;
 	const double pix_worth_y = (abs(min_y) + abs(max_y))/yres;
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	const complex<double> c(-.8, .156);
 
 	ofstream q;
-	q.open("julia.ppm");
+	q.open("../img/julia.ppm");
 	q<<"P3\n"<<xres<<" "<<yres<<"\n255\n";
 
 	for (int y = 0; y < yres; ++y)

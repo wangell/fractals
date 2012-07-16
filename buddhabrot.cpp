@@ -3,20 +3,22 @@
 #include <cstdlib>
 #include <complex>
 
+#define USE_OPEN_MP
+
 using namespace std;
 
 const bool mandelbrot_calc(const complex<double> c, int max_iter);
 const void mandelbrot_plot(const complex<double> c, int max_iter, int, int);
 
-const int x_res = 5000;
-const int y_res = 5000;
+const int x_res = 3000; //5000
+const int y_res = 3000;
 
 long plot[y_res][x_res];
 
 int main(int argc, char** argv)
 {
-	const unsigned int max_iter = 20000000;
-	const int brot_iter = 2000;
+	const unsigned int max_iter = 300000000; //20000000
+	const int brot_iter = 10000;//2000
 
 	const double min_x = -2;
 	const double max_x = .8;
@@ -26,8 +28,15 @@ int main(int argc, char** argv)
 	const int pix_x = x_res/(abs(min_x)+abs(max_x));
 	const int pix_y = y_res/(abs(min_y)+abs(max_y));
 
+	float prog_counter;
+
 	srand((unsigned)time(NULL));
 
+	cout<<"Generating image..."<<endl;
+
+	#ifdef USE_OPEN_MP
+	#pragma omp parallel for schedule(dynamic)
+	#endif
 	for (int curr_iter = 0; curr_iter < max_iter; ++curr_iter)
 	{
 		//Generate random
@@ -43,12 +52,14 @@ int main(int argc, char** argv)
 		}
 
 	}
+
+	cout<<"Writing image..."<<endl;
 	
 	ofstream q;
-	q.open("yolo");
+	q.open("../img/buddha.ppm");
 	q<<"P3\n"<<x_res<<" "<<y_res<<"\n255\n";
 
-	int max_val = 0;
+	double long max_val = 0;
 
 	for (int y = 0; y < y_res; ++y)
 	{
@@ -59,11 +70,13 @@ int main(int argc, char** argv)
 		}
 	}
 
+	cout<<"Max RGB value: "<<max_val<<endl;
+
 	for (int y = 0; y < y_res; ++y)
 	{
 		for (int x = 0; x < x_res; ++x)
 		{
-			q<<0<<" "<<0<<" "<<(255/max_val)*plot[x][y]<<" ";
+			q<<0<<" "<<0<<" "<<ceil(((double)255/(double long)max_val)*plot[x][y])<<" ";
 		}
 		q<<endl;
 	}
